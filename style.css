@@ -1,5 +1,5 @@
 body {
-  background: black;
+  background: rgb(58, 88, 88);
 }
 
 #canvas1 {
@@ -7,9 +7,11 @@ body {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border: 5px solid white;
+  border: 5px solid rgb(73, 139, 139);
 }
 
-#playerImage, #backgroundImage, #enemyImage {
+#playerImage,
+#backgroundImage,
+#enemyImage {
   display: none;
 }
