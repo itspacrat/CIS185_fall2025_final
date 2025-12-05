@@ -32,7 +32,13 @@ window.addEventListener('load', function () {
         if ((e.key === 'ArrowDown' ||
           e.key === 'ArrowUp' ||
           e.key === 'ArrowLeft' ||
-          e.key === 'ArrowRight')
+          e.key === 'ArrowRight'||
+          e.key === ' '|| // Added space and wasd keys for alternative controls keypdown
+          e.key === 'w'||
+          e.key === 'a'||
+          e.key === 's'||
+          e.key === 'd'
+        )
           && this.keys.indexOf(e.key) === -1) {
           this.keys.push(e.key);
         }
@@ -43,7 +49,12 @@ window.addEventListener('load', function () {
         if (e.key === 'ArrowDown' ||
           e.key === 'ArrowUp' ||
           e.key === 'ArrowLeft' ||
-          e.key === 'ArrowRight') {
+          e.key === 'ArrowRight'||
+          e.key === ' '|| // Added space and wasd keys for alternative controls keyup
+          e.key === 'w'||
+          e.key === 'a'||
+          e.key === 's'||
+          e.key === 'd') {
           // this.keys.splice(e.key.indexOf(e.key), 1)
           const index = this.keys.indexOf(e.key);
           if (index > -1) this.keys.splice(index, 1);
@@ -124,16 +135,25 @@ window.addEventListener('load', function () {
         this.frameTimer += deltaTime;
       }
       // controls
-      if (input.keys.indexOf('ArrowRight') > -1) {
+      if (input.keys.indexOf('ArrowRight') > -1 || input.keys.indexOf('d') > -1) {
         this.speed = 5;
-      } else if (input.keys.indexOf('ArrowLeft') > -1) {
+
+      } else if (input.keys.indexOf('ArrowLeft') > -1 || input.keys.indexOf('a') > -1) {
         this.speed = -5;
-      } else if (input.keys.indexOf('ArrowUp') > -1 && this.onGround()) {
-        this.velocityY -= 32; // jump impulse, only if character is onGround
+
+      } else if (
+        (
+          input.keys.indexOf('ArrowUp') > -1 ||
+          input.keys.includes('w') ||
+          input.keys.includes(' ')
+        )
+        && this.onGround()
+      ) {
+        this.velocityY -= 32;
+
       } else {
         this.speed = 0;
       }
-
       // horizontal movement
       // don't let character x position go passed the left and right border
       if (this.x < 0) this.x = 0;
@@ -298,10 +318,11 @@ window.addEventListener('load', function () {
     background.draw(ctx);
     player.draw(ctx);
     handleEnemies(deltaTime); // draw the enemies
-    displayStatusText(ctx); // draw the score card
-
+    
     player.update(input, deltaTime);
     background.update();
+    displayStatusText(ctx); // draw the score card
+
     if (!gameOver) requestAnimationFrame(animate);
   }
 
