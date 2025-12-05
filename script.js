@@ -52,8 +52,18 @@ window.addEventListener('load', function () {
       });
     }
   }
-
+  // ENGINE STYLE CLASSES
+  function isColliding(a, b) {
+    const dx = (b.x + b.width / 2) - (a.x + a.width / 2);
+    const dy = (b.y + b.height / 2) - (a.y + a.height / 2);
+    const distance = Math.sqrt(dx * dx + dy * dy);
+    return (distance < b.width / 2 + a.width / 2);
+  }
   class Player {
+
+    isCollidingWith(b) {
+      return isColliding(this, b);
+    }
     constructor(gameWidth, gameHeight) {
       this.gameWidth = gameWidth;
       this.gameHeight = gameHeight;
@@ -76,7 +86,7 @@ window.addEventListener('load', function () {
 
       this.fps = 20;
       this.frameTimer = 0;
-      this.frameInterval = 1000/this.fps;
+      this.frameInterval = 1000 / this.fps;
     }
 
     draw(context) {
@@ -89,7 +99,7 @@ window.addEventListener('load', function () {
       context.strokeRect(this.x, this.y, this.width, this.height);
       context.beginPath();
       context.strokeStyle = "blue";
-      context.arc(this.x + this.width/2, this.y+this.height/2, this.width/2, 0, Math.PI * 2);
+      context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
       context.stroke();
       // sx through sh helps create a bounding box around a single pose of the character from the spritesheet.
       // check 15:00 min in video to see.
@@ -101,16 +111,18 @@ window.addEventListener('load', function () {
       context.drawImage(this.image, sx, sy, sw, sh, this.x, this.y, this.width, this.height);
     }
 
+
     update(input, deltaTime) {
       // collistion detection (watch 43:15 to see pythagerous theorem in action)
       enemies.forEach(enemy => {
         // const dx = enemy.x - this.x;
         // const dy = enemy.y - this.y;
-        const dx = (enemy.x + enemy.width/2) - (this.x + this.width/2);
-        const dy = (enemy.y + enemy.height/2) - (this.y + this.height/2);
+        const dx = (enemy.x + enemy.width / 2) - (this.x + this.width / 2);
+        const dy = (enemy.y + enemy.height / 2) - (this.y + this.height / 2);
         const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < enemy.width/2 + this.width/2) {
+        if (distance < enemy.width / 2 + this.width / 2) {
           gameOver = true
+          console.log("Game over reached!");
         }
       })
 
@@ -124,11 +136,14 @@ window.addEventListener('load', function () {
         this.frameTimer += deltaTime;
       }
       // controls
-      if (input.keys.indexOf('ArrowRight') > -1) {
+      if (input.keys.indexOf('ArrowRight') > -1
+        || input.keys.indexOf('KeyD') > -1) {
         this.speed = 5;
-      } else if (input.keys.indexOf('ArrowLeft') > -1) {
+      } else if (input.keys.indexOf('ArrowLeft') > -1
+        || input.keys.indexOf('KeyA') > -1) {
         this.speed = -5;
-      } else if (input.keys.indexOf('ArrowUp') > -1 && this.onGround()) {
+      } else if ((input.keys.indexOf('ArrowUp') > -1
+        || input.keys.indexOf('KeyW') > -1) && this.onGround()) {
         this.velocityY -= 32; // jump impulse, only if character is onGround
       } else {
         this.speed = 0;
@@ -201,7 +216,7 @@ window.addEventListener('load', function () {
       this.frameTimer = 0;
       this.maxFrame = 5;
       this.fps = 20;
-      this.frameInterval = 1000/this.fps;
+      this.frameInterval = 1000 / this.fps;
       this.speed = 8;
 
       this.markedForDeletion = false;
@@ -212,12 +227,12 @@ window.addEventListener('load', function () {
 
       context.beginPath();
       context.strokeStyle = "blue";
-      context.arc(this.x + this.width/2, this.y+this.height/2, this.width/2, 0, Math.PI * 2);
+      context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
       context.stroke();
 
       context.beginPath();
       context.strokeStyle = 'red'
-      context.arc(this.x, this.y, this.width/2, 0, Math.PI * 2);
+      context.arc(this.x, this.y, this.width / 2, 0, Math.PI * 2);
       context.stroke();
 
       // draw the enemy
@@ -236,6 +251,7 @@ window.addEventListener('load', function () {
       this.x -= this.speed;
       // if the enemey has moved off screen, mark it for deletion.
       if (this.x < 0 - this.width) this.markedForDeletion = true;
+      score++
     }
   }
 
@@ -244,9 +260,9 @@ window.addEventListener('load', function () {
     // console.log(enemies)
     // push enemies into the arracy
     if (enemyTimer > enemyInterval + randomEnemyInterval) {
-        enemies.push(new Enemy(canvas.width, canvas.height));
-        randomEnemyInterval = Math.random() * 1000 + 500;
-        enemyTimer = 0;
+      enemies.push(new Enemy(canvas.width, canvas.height));
+      randomEnemyInterval = Math.random() * 1000 + 500;
+      enemyTimer = 0;
     } else {
       enemyTimer += deltaTime;
     }
@@ -268,11 +284,12 @@ window.addEventListener('load', function () {
 
     // lose display
     if (gameOver) {
+
       context.textAlign = 'center';
       context.fillStyle = 'black';
-      context.fillText('Game Over, try again!', canvas.width/2, 200);
+      context.fillText('Game Over, try again!', canvas.width / 2, 200);
       context.fillStyle = 'white';
-      context.fillText('Game Over, try again!', canvas.width/2, 202);
+      context.fillText('Game Over, try again!', canvas.width / 2, 202);
     }
   }
 
