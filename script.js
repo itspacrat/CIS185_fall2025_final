@@ -24,8 +24,13 @@ window.addEventListener('load', function () {
   let score = 0;
   let enemies = [];
   let gameOver = false;
-  const gameOverSound = new Audio();
-  gameOverSound.src = 'assets/soundeffects/poppop.ai-womp womp sound effect.mp3';
+  const gameOverSound = new Audio('assets/soundeffects/wompwomp.mp3');
+  document.getElementById('retryBtn').addEventListener('click', () => {
+    console.log('retry clicked');
+    location.reload();
+  });
+
+
 
   class InputHandler {
     constructor() {
@@ -134,8 +139,11 @@ window.addEventListener('load', function () {
         const dy = (enemy.y + enemy.height / 2) - (this.y + this.height / 2);
         const distance = Math.sqrt(dx * dx + dy * dy);
         if (distance < enemy.width / 2 + this.width / 2) {
+          if (!gameOver) {
+            gameOverSound.play();
+            document.getElementById('retryBtn').style.display = 'block';
+          }
           gameOver = true
-          console.log("Game over reached!");
         }
       })
 
