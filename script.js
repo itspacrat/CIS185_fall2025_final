@@ -24,8 +24,8 @@ window.addEventListener('load', function () {
   let score = 0;
   let enemies = [];
   let gameOver = false;
-  const gameOverSound = new Audio();
-  gameOverSound.src = 'assets/soundeffects/poppop.ai-womp womp sound effect.mp3';
+  const gameOverSound = new Audio('assets/soundeffects/wompwomp.mp3');
+
 
   class InputHandler {
     constructor() {
