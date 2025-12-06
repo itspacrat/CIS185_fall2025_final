@@ -62,7 +62,6 @@ body {
   z-index: 1000;
   color: #f9fafb;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  margin-top: -50px;
 } 
 
 .screen--visible {
