@@ -25,9 +25,67 @@ window.addEventListener('load', function () {
   let enemies = [];
   let gameOver = false;
   const gameOverSound = new Audio('assets/soundeffects/wompwomp.mp3');
+  gameOverSound.volume = 0.1;
   document.getElementById('retryBtn').addEventListener('click', () => {
     console.log('retry clicked');
     location.reload();
+  });
+
+  loadStartScreen();
+
+  function loadStartScreen() {
+    const startScreen = document.getElementById("startScreen");
+    startScreen.innerHTML = `
+      <div class="screen-inner">
+        <h1>Welcome!</h1>
+        <p class="screen-subtitle">Use the arrow keys to move. Avoid obstacles!</p>
+        <div class="controls-grid">
+          <div class="key key-up" data-key="ArrowUp">
+            ↑
+            <span>Jump</span>
+          </div>
+          <div class="key-row">
+            <div class="key key-left" data-key="ArrowLeft">
+              ←
+              <span>Left</span>
+            </div>
+            <div class="key key-down" data-key="ArrowDown">
+              ↓
+              <span></span>
+            </div>
+            <div class="key key-right" data-key="ArrowRight">
+              →
+              <span>Right</span>
+            </div>
+          </div>
+        </div>
+
+        <button id="startBtn" class="start-btn btn">Start</button>
+      </div>
+    `
+    document.getElementById('startBtn').addEventListener('click', () => {
+      startScreen.style.display = "none";
+      animate(0);
+    });
+
+  }
+
+  // Helper: flash the key when pressed
+  function flashKey(key) {
+    if (!key) return;
+    key.classList.add("active");
+    setTimeout(() => {
+      key.classList.remove("active");
+    }, 120);
+  }
+
+  // Listen for key presses on the start screen
+  window.addEventListener("keydown", (e) => {
+    // Find a matching key element by data-key="ArrowUp", etc.
+    const keyElement = document.querySelector(`.key[data-key="${e.key}"]`);
+    if (keyElement) {
+      flashKey(keyElement);
+    }
   });
 
 
@@ -349,6 +407,6 @@ window.addEventListener('load', function () {
   }
 
   // endless loop!
-  animate(0);
+  // animate(0);
 });
 
