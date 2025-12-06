@@ -133,12 +133,8 @@ window.addEventListener('load', function () {
     update(input, deltaTime) {
       // collistion detection (watch 43:15 to see pythagerous theorem in action)
       enemies.forEach(enemy => {
-        // const dx = enemy.x - this.x;
-        // const dy = enemy.y - this.y;
-        const dx = (enemy.x + enemy.width / 2) - (this.x + this.width / 2);
-        const dy = (enemy.y + enemy.height / 2) - (this.y + this.height / 2);
-        const distance = Math.sqrt(dx * dx + dy * dy);
-        if (distance < enemy.width / 2 + this.width / 2) {
+        // utilize isCollidingWith method
+        if (this.isCollidingWith(enemy)) {
           if (!gameOver) {
             gameOverSound.play();
             document.getElementById('retryBtn').style.display = 'block';
