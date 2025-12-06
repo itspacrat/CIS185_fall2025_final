@@ -235,7 +235,10 @@ window.addEventListener('load', function () {
       }
       this.x -= this.speed;
       // if the enemey has moved off screen, mark it for deletion.
-      if (this.x < 0 - this.width) this.markedForDeletion = true;
+      if (this.x < 0 - this.width) {
+        this.markedForDeletion = true;
+        score++;
+      }
     }
   }
 
@@ -254,8 +257,8 @@ window.addEventListener('load', function () {
       enemy.draw(ctx);
       enemy.update(deltaTime);
     })
-    enemies = enemies.filter(enemy => !enemy.markedForDeletion)
 
+    enemies = enemies.filter(enemy => !enemy.markedForDeletion)
   }
 
   function displayStatusText(context) {
