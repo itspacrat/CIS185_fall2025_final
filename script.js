@@ -25,10 +25,43 @@ window.addEventListener('load', function () {
   let enemies = [];
   let gameOver = false;
   const gameOverSound = new Audio('assets/soundeffects/wompwomp.mp3');
+ 
+ // RETRY BUTTON //
   document.getElementById('retryBtn').addEventListener('click', () => {
     console.log('retry clicked');
     location.reload();
   });
+
+// SAVE BUTTON AND INITIALS INPUT //
+
+//  HIGH SCORE SAVE  //
+  const saveScoreBtn = document.getElementById('saveScoreBtn');
+  const initialsInput = document.getElementById('initialsInput');
+
+  saveScoreBtn.addEventListener('click', () => {
+  const initials = initialsInput.value.trim().toUpperCase();
+
+  if (!initials) {
+    alert("Enter initials first!");
+    return;
+  }
+  let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+
+  // NEW SCORE ENTRY
+  highScores.push({
+    initials,
+    score,
+  });
+
+// SAVE TO LOCAL STORAGE
+  localStorage.setItem('highScores', JSON.stringify(highScores));
+
+  // HIDE UI
+  initialsInput.style.display = 'none';
+  saveScoreBtn.style.display = 'none';
+
+  alert("Score Saved!");
+});
 
 
 
@@ -138,6 +171,8 @@ window.addEventListener('load', function () {
           if (!gameOver) {
             gameOverSound.play();
             document.getElementById('retryBtn').style.display = 'block';
+            document.getElementById('initialsInput').style.display = 'block';
+            document.getElementById('saveScoreBtn').style.display = 'block';
           }
           gameOver = true
         }
@@ -315,8 +350,60 @@ window.addEventListener('load', function () {
       context.fillText('Game Over, try again!', canvas.width / 2, 200);
       context.fillStyle = 'white';
       context.fillText('Game Over, try again!', canvas.width / 2, 202);
+
+     
+// ===== HIGH SCORE DISPLAY LOGIC =====
+
+// LOAD
+let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+
+// SORT
+highScores.sort((a, b) => b.score - a.score);
+
+// TOP 5
+highScores = highScores.slice(0, 5);
+
+// === BACKGROUND BOX BEHIND HIGH SCORES ===
+const boxX = canvas.width - 350;
+const boxY = 230;
+const boxW = 300;
+const boxH = 250;
+
+context.fillStyle = 'rgba(0,0,0,1)';
+context.fillRect(boxX, boxY, boxW, boxH);
+
+// BORDER 
+context.strokeStyle = 'white';
+context.lineWidth = 3;
+context.strokeRect(boxX, boxY, boxW, boxH);
+
+// CENTER text **inside the box**
+context.textAlign = 'center';
+
+// PADDING
+const innerCenterX = boxX + boxW / 2;        
+// HEADER PADDING
+context.fillStyle = 'black';
+context.fillText('HIGH SCORES:', innerCenterX, boxY + 40);
+context.fillStyle = 'white';
+context.fillText('HIGH SCORES:', innerCenterX, boxY + 42);
+
+// ENTRIES PADDING
+highScores.forEach((entry, index) => {
+  let y = boxY + 85 + index * 35;     
+
+  context.fillStyle = 'black';
+  context.fillText(`${entry.initials}: ${entry.score}`, innerCenterX, y);
+  context.fillStyle = 'white';
+  context.fillText(`${entry.initials}: ${entry.score}`, innerCenterX, y + 2);
+});
+
+}
+
+
+
     }
-  }
+  
 
   // ================================================
   // Implementation section:
