@@ -56,14 +56,14 @@ body {
 .screen {
   position: fixed;
   inset: 0;
-  background: rgba(5, 10, 25, 0.9);
   display: none; /* hidden by default */
   align-items: center;
   justify-content: center;
   z-index: 1000;
   color: #f9fafb;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-}
+  margin-top: -50px;
+} 
 
 .screen--visible {
   display: flex;

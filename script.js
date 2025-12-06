@@ -24,6 +24,7 @@ window.addEventListener('load', function () {
   let score = 0;
   let enemies = [];
   let gameOver = false;
+  let gameStart = false;
   const gameOverSound = new Audio('assets/soundeffects/wompwomp.mp3');
   gameOverSound.volume = 0.1;
   document.getElementById('retryBtn').addEventListener('click', () => {
@@ -31,14 +32,16 @@ window.addEventListener('load', function () {
     location.reload();
   });
 
+  // Call the Start screen
   loadStartScreen();
 
+  // Load the Start screen to show the controls and show the background and enemies
   function loadStartScreen() {
     const startScreen = document.getElementById("startScreen");
     startScreen.innerHTML = `
       <div class="screen-inner">
         <h1>Welcome!</h1>
-        <p class="screen-subtitle">Use the arrow keys to move. Avoid obstacles!</p>
+        <p class="screen-subtitle">Use the arrow keys to move. Avoid Enemies!</p>
         <div class="controls-grid">
           <div class="key key-up" data-key="ArrowUp">
             ↑
@@ -65,6 +68,8 @@ window.addEventListener('load', function () {
     `
     document.getElementById('startBtn').addEventListener('click', () => {
       startScreen.style.display = "none";
+      gameStart = true;
+      score = 0;
       animate(0);
     });
 
@@ -406,6 +411,25 @@ window.addEventListener('load', function () {
     if (!gameOver) requestAnimationFrame(animate);
   }
 
+
+  // Demo of the background to run while start menu
+  function welcomeDemo(timeStamp) {
+    if (gameStart) return;
+
+    // most screens run at 60fps
+    const deltaTime = timeStamp - lastTime; // 29:00 talks about delta time (requestAnimationFrame auto creates a timeStamp)
+    // console.log(deltaTime) // 1000ms/xfps (my fps is 240HZ, if yours is at 60fps, deltaTime is around 16)
+    lastTime = timeStamp;
+    // on each render, clear the previous player drawing.
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    background.draw(ctx);
+    handleEnemies(deltaTime); // draw the enemies
+
+    background.update();
+    requestAnimationFrame(welcomeDemo)
+  }
+
+  welcomeDemo(0);
   // endless loop!
   // animate(0);
 });
