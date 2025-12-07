@@ -105,6 +105,7 @@ window.addEventListener('load', function () {
     `
     document.getElementById('startBtn').addEventListener('click', () => {
       startScreen.style.display = "none";
+      learnMoreBtn.style.display = "none"
       gameStart = true;
       score = 0;
       enemies = [];
@@ -166,6 +167,41 @@ window.addEventListener('load', function () {
   });
 
 
+  // Learn More section
+  // Show a window with a link to the repo and to each developer
+  
+  const learnMoreBtn = document.getElementById("learnMoreBtn");
+  const learnMoreContainer = document.getElementById("LearnMoreContainer");
+  learnMoreBtn.addEventListener('click', () => {
+    startScreen.style.display = "none";
+    learnMoreBtn.style.display = "none";
+    learnMoreContainer.innerHTML = `
+      <div class="screen-inner">
+        <h2>CIS 185 - Web Development</h2>
+        <p>Final game project side scrolling adventure<p>
+        <p>You can find the Git repository <a href="https://github.com/itspacrat/CIS185_fall2025_final/tree/main" target="_blank">here</a></p>
+        <p>Developers</p>
+        <div class="dev-container">
+          <div>Blake
+          </div>
+          <div>Dodge
+          </div>
+          <div>Jason
+          </div>
+        </div>
+        <button id="returnToGameBtn" class='btn return-to-game-btn'>return to game</button>
+      </div>
+    `
+
+    const returnToGameBtn = document.getElementById("returnToGameBtn");
+
+    returnToGameBtn.addEventListener('click', () =>{
+      startScreen.style.display = "block";
+      learnMoreContainer.style.display = "none";
+      learnMoreBtn.style.display = "block";
+    })
+
+  })
 
 
 

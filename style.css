@@ -69,8 +69,9 @@ body {
   box-shadow: 1px 1px 1px 1px #020617;
 }
 
-/* Fullscreen start menu overlay */
-.start-screen-container {
+
+/* start menu overlay */
+.info-container {
   position: absolute;
   top: 20%;
   left: 50%;
@@ -174,4 +175,28 @@ body {
 .key-space {
   margin-top: 20px;
   padding: 10px 40px;
+}
+
+
+/* Learn more section */
+
+/* Learn More button */
+.learnMore {
+  position: absolute;
+  display: block;
+  bottom: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.dev-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 50px;
+}
+
+.return-to-game-btn {
+  display: block;
+  margin: 20px auto;
 }
