@@ -53,20 +53,17 @@ body {
 }
 
 /* Fullscreen start menu overlay */
-.screen {
-  position: fixed;
-  inset: 0;
-  display: none; /* hidden by default */
-  align-items: center;
-  justify-content: center;
-  z-index: 1000;
+.start-screen-container {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-60%);
+  height: 375px;
+  width: 400px;
+  z-index: 1000000;
   color: #f9fafb;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-family: Helvetica, sans-serif;
 } 
-
-.screen--visible {
-  display: flex;
-}
 
 .screen-inner {
   text-align: center;
@@ -81,12 +78,13 @@ body {
 .screen-inner h1 {
   margin: 0 0 0.5rem;
   font-size: 2rem;
+  text-shadow: 2px 2px rgb(0, 0, 0);
 }
 
 .screen-subtitle {
   margin: 0 0 1.5rem;
-  color: #cbd5f5;
   font-size: 0.95rem;
+  text-shadow: 2px 2px rgb(0, 0, 0);
 }
 
 /* Controls layout */
@@ -112,7 +110,6 @@ body {
   background: #020617;
   font-size: 1.2rem;
   font-weight: 600;
-  color: #e5e7eb;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -123,7 +120,8 @@ body {
 .key span {
   font-size: 0.7rem;
   font-weight: 400;
-  color: #9ca3af;
+  color: #f9fafb;
+  text-shadow: 2px 2px rgb(0, 0, 0);
 }
 
 /* Highlight when the key is "pressed" */
