@@ -52,6 +52,23 @@ body {
   background-color: rgb(90, 170, 170);
 }
 
+.volumeBtn {
+  border: 2px outset #f9fafb;
+  box-shadow: -1px -1px 1px 1px #020617;
+  position: fixed;
+  top: 13%;
+  left: 67.5%;
+  background: transparent;
+  height: 50px;
+  width: 50px;
+  opacity: 0.5;
+}
+
+.volumeBtn:active {
+  border: 2px inset;
+  box-shadow: 1px 1px 1px 1px #020617;
+}
+
 /* Fullscreen start menu overlay */
 .start-screen-container {
   position: absolute;
