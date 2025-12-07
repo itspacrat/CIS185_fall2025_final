@@ -175,6 +175,7 @@ window.addEventListener('load', function () {
   learnMoreBtn.addEventListener('click', () => {
     startScreen.style.display = "none";
     learnMoreBtn.style.display = "none";
+    learnMoreContainer.style.display = "block";
     learnMoreContainer.innerHTML = `
       <div class="screen-inner">
         <h2>CIS 185 - Web Development</h2>
