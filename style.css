@@ -1,5 +1,5 @@
 body {
-  background: rgb(58, 88, 88);
+  background: #3a5858;
 }
 
 #canvas1 {
@@ -70,8 +70,9 @@ body {
   box-shadow: 1px 1px 1px 1px #020617;
 }
 
-/* Fullscreen start menu overlay */
-.start-screen-container {
+
+/* start menu overlay */
+.info-container {
   position: absolute;
   top: 20%;
   left: 50%;
@@ -175,4 +176,42 @@ body {
 .key-space {
   margin-top: 20px;
   padding: 10px 40px;
+}
+
+
+/* Learn more section */
+
+/* Learn More button */
+.learnMore {
+  position: absolute;
+  display: block;
+  bottom: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.screen-inner a {
+  color: #aefcfc;
+  font-style: italic;
+  text-decoration: none;
+  transition: all 0.5s ease-in-out;
+}
+
+.screen-inner a:hover {
+  box-shadow: 0px 0px 10px 7px #aefcfc;
+  color: #020617;
+  background-color: #aefcfc;
+  transition: all 0.5s ease-in-out;
+}
+
+.dev-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 50px;
+}
+
+.return-to-game-btn {
+  display: block;
+  margin: 20px auto;
 }
