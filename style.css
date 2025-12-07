@@ -57,9 +57,9 @@ body {
   position: absolute;
   top: 20%;
   left: 50%;
-  transform: translateX(-60%);
+  transform: translateX(-55%);
   height: 375px;
-  width: 400px;
+  width: 500px;
   z-index: 1000000;
   color: #f9fafb;
   font-family: Helvetica, sans-serif;
@@ -88,10 +88,11 @@ body {
 }
 
 /* Controls layout */
-.controls-grid {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.controls-container {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
   gap: 0.5rem;
   margin-bottom: 1.5rem;
 }
@@ -99,6 +100,13 @@ body {
 .key-row {
   display: flex;
   gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.key-space {
+  grid-column: 1 / span 2;
+  justify-self: center;
+  width: 200px;
 }
 
 /* Individual "key" boxes */
@@ -136,4 +144,17 @@ body {
   margin: 0;
   font-size: 0.9rem;
   color: #e5e7eb;
+}
+
+.key-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.key-space {
+  margin-top: 20px;
+  padding: 10px 40px;
 }
