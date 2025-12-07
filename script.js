@@ -24,44 +24,74 @@ window.addEventListener('load', function () {
   let score = 0;
   let enemies = [];
   let gameOver = false;
+  let gameStart = false;
   const gameOverSound = new Audio('assets/soundeffects/wompwomp.mp3');
- 
- // RETRY BUTTON //
+  gameOverSound.volume = 0.1;
   document.getElementById('retryBtn').addEventListener('click', () => {
     console.log('retry clicked');
     location.reload();
   });
 
-// SAVE BUTTON AND INITIALS INPUT //
+  // Call the Start screen
+  loadStartScreen();
 
-//  HIGH SCORE SAVE  //
-  const saveScoreBtn = document.getElementById('saveScoreBtn');
-  const initialsInput = document.getElementById('initialsInput');
+  // Load the Start screen to show the controls and show the background and enemies
+  function loadStartScreen() {
+    const startScreen = document.getElementById("startScreen");
+    startScreen.innerHTML = `
+      <div class="screen-inner">
+        <h1>Welcome!</h1>
+        <p class="screen-subtitle">Use the arrow keys to move. Avoid Enemies!</p>
+        <div class="controls-grid">
+          <div class="key key-up" data-key="ArrowUp">
+            ↑
+            <span>Jump</span>
+          </div>
+          <div class="key-row">
+            <div class="key key-left" data-key="ArrowLeft">
+              ←
+              <span>Left</span>
+            </div>
+            <div class="key key-down" data-key="ArrowDown">
+              ↓
+              <span></span>
+            </div>
+            <div class="key key-right" data-key="ArrowRight">
+              →
+              <span>Right</span>
+            </div>
+          </div>
+        </div>
 
-  saveScoreBtn.addEventListener('click', () => {
-  const initials = initialsInput.value.trim().toUpperCase();
+        <button id="startBtn" class="start-btn btn">Start</button>
+      </div>
+    `
+    document.getElementById('startBtn').addEventListener('click', () => {
+      startScreen.style.display = "none";
+      gameStart = true;
+      score = 0;
+      animate(0);
+    });
 
-  if (!initials) {
-    alert("Enter initials first!");
-    return;
   }
-  let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
 
-  // NEW SCORE ENTRY
-  highScores.push({
-    initials,
-    score,
+  // Helper: flash the key when pressed
+  function flashKey(key) {
+    if (!key) return;
+    key.classList.add("active");
+    setTimeout(() => {
+      key.classList.remove("active");
+    }, 120);
+  }
+
+  // Listen for key presses on the start screen
+  window.addEventListener("keydown", (e) => {
+    // Find a matching key element by data-key="ArrowUp", etc.
+    const keyElement = document.querySelector(`.key[data-key="${e.key}"]`);
+    if (keyElement) {
+      flashKey(keyElement);
+    }
   });
-
-// SAVE TO LOCAL STORAGE
-  localStorage.setItem('highScores', JSON.stringify(highScores));
-
-  // HIDE UI
-  initialsInput.style.display = 'none';
-  saveScoreBtn.style.display = 'none';
-
-  alert("Score Saved!");
-});
 
 
 
@@ -351,59 +381,59 @@ window.addEventListener('load', function () {
       context.fillStyle = 'white';
       context.fillText('Game Over, try again!', canvas.width / 2, 202);
 
-     
-// ===== HIGH SCORE DISPLAY LOGIC =====
 
-// LOAD
-let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+      // ===== HIGH SCORE DISPLAY LOGIC =====
 
-// SORT
-highScores.sort((a, b) => b.score - a.score);
+      // LOAD
+      let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
 
-// TOP 5
-highScores = highScores.slice(0, 5);
+      // SORT
+      highScores.sort((a, b) => b.score - a.score);
 
-// === BACKGROUND BOX BEHIND HIGH SCORES ===
-const boxX = canvas.width - 350;
-const boxY = 230;
-const boxW = 300;
-const boxH = 250;
+      // TOP 5
+      highScores = highScores.slice(0, 5);
 
-context.fillStyle = 'rgba(0,0,0,1)';
-context.fillRect(boxX, boxY, boxW, boxH);
+      // === BACKGROUND BOX BEHIND HIGH SCORES ===
+      const boxX = canvas.width - 350;
+      const boxY = 230;
+      const boxW = 300;
+      const boxH = 250;
 
-// BORDER 
-context.strokeStyle = 'white';
-context.lineWidth = 3;
-context.strokeRect(boxX, boxY, boxW, boxH);
+      context.fillStyle = 'rgba(0,0,0,1)';
+      context.fillRect(boxX, boxY, boxW, boxH);
 
-// CENTER text **inside the box**
-context.textAlign = 'center';
+      // BORDER 
+      context.strokeStyle = 'white';
+      context.lineWidth = 3;
+      context.strokeRect(boxX, boxY, boxW, boxH);
 
-// PADDING
-const innerCenterX = boxX + boxW / 2;        
-// HEADER PADDING
-context.fillStyle = 'black';
-context.fillText('HIGH SCORES:', innerCenterX, boxY + 40);
-context.fillStyle = 'white';
-context.fillText('HIGH SCORES:', innerCenterX, boxY + 42);
+      // CENTER text **inside the box**
+      context.textAlign = 'center';
 
-// ENTRIES PADDING
-highScores.forEach((entry, index) => {
-  let y = boxY + 85 + index * 35;     
+      // PADDING
+      const innerCenterX = boxX + boxW / 2;
+      // HEADER PADDING
+      context.fillStyle = 'black';
+      context.fillText('HIGH SCORES:', innerCenterX, boxY + 40);
+      context.fillStyle = 'white';
+      context.fillText('HIGH SCORES:', innerCenterX, boxY + 42);
 
-  context.fillStyle = 'black';
-  context.fillText(`${entry.initials}: ${entry.score}`, innerCenterX, y);
-  context.fillStyle = 'white';
-  context.fillText(`${entry.initials}: ${entry.score}`, innerCenterX, y + 2);
-});
+      // ENTRIES PADDING
+      highScores.forEach((entry, index) => {
+        let y = boxY + 85 + index * 35;
 
-}
-
-
+        context.fillStyle = 'black';
+        context.fillText(`${entry.initials}: ${entry.score}`, innerCenterX, y);
+        context.fillStyle = 'white';
+        context.fillText(`${entry.initials}: ${entry.score}`, innerCenterX, y + 2);
+      });
 
     }
-  
+
+
+
+  }
+
 
   // ================================================
   // Implementation section:
@@ -435,7 +465,26 @@ highScores.forEach((entry, index) => {
     if (!gameOver) requestAnimationFrame(animate);
   }
 
+
+  // Demo of the background to run while start menu
+  function welcomeDemo(timeStamp) {
+    if (gameStart) return;
+
+    // most screens run at 60fps
+    const deltaTime = timeStamp - lastTime; // 29:00 talks about delta time (requestAnimationFrame auto creates a timeStamp)
+    // console.log(deltaTime) // 1000ms/xfps (my fps is 240HZ, if yours is at 60fps, deltaTime is around 16)
+    lastTime = timeStamp;
+    // on each render, clear the previous player drawing.
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    background.draw(ctx);
+    handleEnemies(deltaTime); // draw the enemies
+
+    background.update();
+    requestAnimationFrame(welcomeDemo)
+  }
+
+  welcomeDemo(0);
   // endless loop!
-  animate(0);
+  // animate(0);
 });
 
