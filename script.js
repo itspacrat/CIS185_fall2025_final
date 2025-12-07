@@ -146,17 +146,22 @@ window.addEventListener('load', function () {
     
     // Volume is on and user clicked it off
     if (volumeIsOn) {
+      // set sound off
       gameOverSound.volume = 0;
+      // change image and attributes to mute
       volumeIcon.src ="/assets/images/volume-xmark-solid-full.svg";
       volumeIcon.alt = "Sound off";
       volumeButton.setAttribute("aria-label", "Unmute sound");
     } else {
+      // set sound on
       gameOverSound.volume = 0.1;
+      // change image and attributes to full volume
       volumeIcon.src ="/assets/images/volume-high-solid-full.svg";
       volumeIcon.alt = "Sound on";
       volumeButton.setAttribute("aria-label", "Mute sound");
     }
     
+    // toggle volumeIsOn to the opposite value
     volumeIsOn = !volumeIsOn;
   });
 
