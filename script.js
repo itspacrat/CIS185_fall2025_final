@@ -41,21 +41,52 @@ window.addEventListener('load', function () {
     startScreen.innerHTML = `
       <div class="screen-inner">
         <h1>Welcome!</h1>
-        <p class="screen-subtitle">Use the arrow keys to move. Avoid Enemies!</p>
-        <div class="controls-grid">
-          <div class="key key-up" data-key="ArrowUp">
-            ↑
-            <span>Jump</span>
+        <p class="screen-subtitle">Use the keys to move. Avoid Enemies!</p>
+        <div class="controls-container">
+          <!-- WASD Block -->
+          <div class="key-container">
+
+            <div class="key key-w" data-key="w">
+              W
+              <span>Jump</span>
+            </div>
+
+            <div class="key-row">
+              <div class="key key-a" data-key="a">
+                A
+                <span>Left</span>
+              </div>
+
+              <div class="key key-s" data-key="s">
+                S
+                <span>Down</span>
+              </div>
+
+              <div class="key key-d" data-key="d">
+                D
+                <span>Right</span>
+              </div>
+            </div>
           </div>
-          <div class="key-row">
-            <div class="key key-left" data-key="ArrowLeft">
+          <div class="key-container">
+            <!-- Arrow Up -->
+            <div class="key key-up" data-key="ArrowUp">
+              ↑
+              <span>Jump</span>
+            </div>
+
+            <!-- Arrow Left / Down / Right Row -->
+            <div class="key-row">
+              <div class="key key-left" data-key="ArrowLeft">
               ←
               <span>Left</span>
             </div>
+
             <div class="key key-down" data-key="ArrowDown">
               ↓
-              <span></span>
+              <span>Down</span>
             </div>
+
             <div class="key key-right" data-key="ArrowRight">
               →
               <span>Right</span>
@@ -63,6 +94,12 @@ window.addEventListener('load', function () {
           </div>
         </div>
 
+        <!-- Space Bar -->
+        <div class="key key-space" data-key=" ">
+          Space
+          <span>Jump</span>
+          </div>
+        </div>
         <button id="startBtn" class="start-btn btn">Start</button>
       </div>
     `
@@ -70,6 +107,7 @@ window.addEventListener('load', function () {
       startScreen.style.display = "none";
       gameStart = true;
       score = 0;
+      enemies = [];
       animate(0);
     });
 
