@@ -27,6 +27,28 @@ window.addEventListener('load', function () {
   let gameStart = false;
   const gameOverSound = new Audio('assets/soundeffects/wompwomp.mp3');
   gameOverSound.volume = 0.1;
+
+  // LOAD HIGH SCORES //
+  let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+  highScores.sort((a, b) => b.score - a.score);
+  highScores = highScores.slice(0, 5);
+
+  function refreshHighScores() {
+    const list = document.getElementById('highScoreList');
+    list.innerHTML = '';
+
+    highScores.forEach(entry => {
+      const li = document.createElement('li');
+      li.textContent = `${entry.initials}: ${entry.score}`;
+      list.appendChild(li);
+    });
+  }
+
+  // REFRESH THAT THANG
+  refreshHighScores();
+
+
+  // RETRY BUTTON //
   document.getElementById('retryBtn').addEventListener('click', () => {
     console.log('retry clicked');
     location.reload();
@@ -206,6 +228,52 @@ window.addEventListener('load', function () {
   })
 
 
+  // SAVE BUTTON AND INITIALS INPUT //
+
+  //  HIGH SCORE SAVE  //
+  const saveScoreBtn = document.getElementById('saveScoreBtn');
+  const initialsInput = document.getElementById('initialsInput');
+
+  saveScoreBtn.addEventListener('click', () => {
+    const initials = initialsInput.value.trim().toUpperCase();
+
+    if (!initials) {
+      alert("Enter initials first!");
+      return;
+    }
+    let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+
+
+    // NEW SCORE ENTRY
+    highScores.push({
+      initials,
+      score,
+    });
+
+    // SAVE TO LOCAL STORAGE
+    localStorage.setItem('highScores', JSON.stringify(highScores));
+
+    // RELOAD SCORES & UPDATE UI
+    highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+    highScores.sort((a, b) => b.score - a.score);
+    highScores = highScores.slice(0, 5);
+    refreshHighScores();
+
+    // HIDE UI
+    initialsInput.style.display = 'none';
+    saveScoreBtn.style.display = 'none';
+
+    alert("Score Saved!");
+
+  });
+
+
+  // CLEAR SCORES BUTTON
+  document.getElementById('clearScoresBtn').addEventListener('click', () => {
+    localStorage.removeItem('highScores');
+    highScores = [];
+    refreshHighScores();
+  });
 
 
   class InputHandler {
@@ -353,6 +421,8 @@ window.addEventListener('load', function () {
             document.getElementById('retryBtn').style.display = 'block';
             document.getElementById('initialsInput').style.display = 'block';
             document.getElementById('saveScoreBtn').style.display = 'block';
+            document.getElementById('clearScoresBtn').style.display = 'block';
+
           }
           gameOver = true
         }
@@ -624,8 +694,13 @@ window.addEventListener('load', function () {
     background.update();
     displayStatusText(ctx); // draw the score card
 
-    if (!gameOver) requestAnimationFrame(animate);
+    if (!gameOver) {
+      requestAnimationFrame(animate);
+    } else {
+      document.querySelector('.highScoreBox').style.display = 'block';
+    }
   }
+
 
 
   // Demo of the background to run while start menu
