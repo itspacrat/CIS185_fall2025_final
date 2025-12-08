@@ -145,24 +145,24 @@ window.addEventListener('load', function () {
   let volumeIsOn = true;
 
   volumeButton.addEventListener('click', () => {
-    
+
     // Volume is on and user clicked it off
     if (volumeIsOn) {
       // set sound off
       gameOverSound.volume = 0;
       // change image and attributes to mute
-      volumeIcon.src ="/assets/images/volume-xmark-solid-full.svg";
+      volumeIcon.src = "/assets/images/volume-xmark-solid-full.svg";
       volumeIcon.alt = "Sound off";
       volumeButton.setAttribute("aria-label", "Unmute sound");
     } else {
       // set sound on
       gameOverSound.volume = 0.1;
       // change image and attributes to full volume
-      volumeIcon.src ="/assets/images/volume-high-solid-full.svg";
+      volumeIcon.src = "/assets/images/volume-high-solid-full.svg";
       volumeIcon.alt = "Sound on";
       volumeButton.setAttribute("aria-label", "Mute sound");
     }
-    
+
     // toggle volumeIsOn to the opposite value
     volumeIsOn = !volumeIsOn;
   });
@@ -170,7 +170,7 @@ window.addEventListener('load', function () {
 
   // Learn More section
   // Show a window with a link to the repo and to each developer
-  
+
   const learnMoreBtn = document.getElementById("learnMoreBtn");
   const learnMoreContainer = document.getElementById("LearnMoreContainer");
   learnMoreBtn.addEventListener('click', () => {
@@ -197,7 +197,7 @@ window.addEventListener('load', function () {
 
     const returnToGameBtn = document.getElementById("returnToGameBtn");
 
-    returnToGameBtn.addEventListener('click', () =>{
+    returnToGameBtn.addEventListener('click', () => {
       startScreen.style.display = "block";
       learnMoreContainer.style.display = "none";
       learnMoreBtn.style.display = "block";
@@ -247,40 +247,83 @@ window.addEventListener('load', function () {
     }
   }
   // ENGINE STYLE CLASSES
+  /**
+   * test whether object A is colliding with object B
+   * @param {GameObject} a a game object to test collisions with
+   * @param {GameObject} b another game object to test collisions with
+   * @returns 
+   */
   function isColliding(a, b) {
     const dx = (b.x + b.width / 2) - (a.x + a.width / 2);
     const dy = (b.y + b.height / 2) - (a.y + a.height / 2);
     const distance = Math.sqrt(dx * dx + dy * dy);
     return (distance < b.width / 2 + a.width / 2);
   }
-  class Player {
 
+  class SpriteManager {
+    constructor(spriteWidth, spriteHeight, spriteSheet) {
+      this.spriteWidth = spriteWidth;
+      this.spriteHeight = spriteHeight;
+      this.spriteSheet = spriteSheet;
+
+    }
+  }
+
+  class GameObject {
     isCollidingWith(b) {
       return isColliding(this, b);
     }
-    constructor(gameWidth, gameHeight) {
+    constructor(gameWidth, gameHeight, spriteWidth, spriteHeight, spriteSheet) {
       this.gameWidth = gameWidth;
       this.gameHeight = gameHeight;
-      this.width = 200;
-      this.height = 200;
-
-      this.x = 0;
-      this.y = this.gameHeight - this.height;
-      this.image = document.getElementById('playerImage');
-
+      this.sprite = new SpriteManager(spriteWidth, spriteHeight, spriteSheet);
       this.frameX = 0;
       this.frameY = 0;
 
       this.speed = 0;
       this.velocityY = 0;
 
-      this.weight = 1;
+      //this.weight = 1;
 
       this.maxFrame = 8;
 
       this.fps = 20;
       this.frameTimer = 0;
       this.frameInterval = 1000 / this.fps;
+      // this.spriteWidth = spriteWidth; // 200 for players
+      // this.spriteHeight = spriteHeight; // 200 for players
+    }
+  }
+
+  class Player extends GameObject {
+
+    isCollidingWith(b) {
+      return isColliding(this, b);
+    }
+    constructor(gameWidth, gameHeight, spriteWidth, spriteHeight, spriteSheet) {
+      super(gameWidth, gameHeight, spriteWidth, spriteHeight)
+      // this.gameWidth = gameWidth;
+      // this.gameHeight = gameHeight;
+      // this.width = 200;
+      // this.height = 200;
+
+      // this.x = 0;
+      // this.y = this.gameHeight - this.height;
+      // this.image = document.getElementById('playerImage');
+
+      // this.frameX = 0;
+      // this.frameY = 0;
+
+      // this.speed = 0;
+      // this.velocityY = 0;
+
+      // this.weight = 1;
+
+      // this.maxFrame = 8;
+
+      // this.fps = 20;
+      // this.frameTimer = 0;
+      // this.frameInterval = 1000 / this.fps;
     }
 
     draw(context) {
@@ -314,6 +357,8 @@ window.addEventListener('load', function () {
           if (!gameOver) {
             gameOverSound.play();
             document.getElementById('retryBtn').style.display = 'block';
+            document.getElementById('initialsInput').style.display = 'block';
+            document.getElementById('saveScoreBtn').style.display = 'block';
           }
           gameOver = true
         }
@@ -376,32 +421,8 @@ window.addEventListener('load', function () {
       return this.y >= this.gameHeight - this.height;
     }
   }
-
-  class Background {
-    constructor(gameWidth, gameHeight) {
-      this.gameWidth = gameWidth;
-      this.gameHeight = gameHeight;
-
-      this.image = document.getElementById('backgroundImage');
-      this.x = 0;
-      this.y = 0;
-      this.width = 2400;
-      this.height = 720;
-      this.speed = 1;
-    }
-    draw(context) {
-      // generate 2 images ( watch 24:11 to see visualization of Image stitch)
-      context.drawImage(this.image, this.x, this.y, this.width, this.height);
-      context.drawImage(this.image, this.x + this.width - this.speed, this.y, this.width, this.height)
-    }
-    update() {
-      this.x -= this.speed; // left scroll
-      if (this.x < 0 - this.width) this.x = 0;
-    }
-  }
-
-  class Enemy {
-    constructor(gameWidth, gameHeight) {
+  class Enemy extends GameObject {
+    constructor() {
       this.gameWidth = gameWidth;
       this.gameHeight = gameHeight;
       this.width = 160;
@@ -456,6 +477,31 @@ window.addEventListener('load', function () {
     }
   }
 
+  class Background {
+    constructor(gameWidth, gameHeight) {
+      this.gameWidth = gameWidth;
+      this.gameHeight = gameHeight;
+
+      this.image = document.getElementById('backgroundImage');
+      this.x = 0;
+      this.y = 0;
+      this.width = 2400;
+      this.height = 720;
+      this.speed = 1;
+    }
+    draw(context) {
+      // generate 2 images ( watch 24:11 to see visualization of Image stitch)
+      context.drawImage(this.image, this.x, this.y, this.width, this.height);
+      context.drawImage(this.image, this.x + this.width - this.speed, this.y, this.width, this.height)
+    }
+    update() {
+      this.x -= this.speed; // left scroll
+      if (this.x < 0 - this.width) this.x = 0;
+    }
+  }
+
+
+
   // enemies.push(new Enemy(canvas.width, canvas.height));
   function handleEnemies(deltaTime) {
     // console.log(enemies)
@@ -491,8 +537,60 @@ window.addEventListener('load', function () {
       context.fillText('Game Over, try again!', canvas.width / 2, 200);
       context.fillStyle = 'white';
       context.fillText('Game Over, try again!', canvas.width / 2, 202);
+
+
+      // ===== HIGH SCORE DISPLAY LOGIC =====
+
+      // LOAD
+      let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+
+      // SORT
+      highScores.sort((a, b) => b.score - a.score);
+
+      // TOP 5
+      highScores = highScores.slice(0, 5);
+
+      // === BACKGROUND BOX BEHIND HIGH SCORES ===
+      const boxX = canvas.width - 350;
+      const boxY = 230;
+      const boxW = 300;
+      const boxH = 250;
+
+      context.fillStyle = 'rgba(0,0,0,1)';
+      context.fillRect(boxX, boxY, boxW, boxH);
+
+      // BORDER 
+      context.strokeStyle = 'white';
+      context.lineWidth = 3;
+      context.strokeRect(boxX, boxY, boxW, boxH);
+
+      // CENTER text **inside the box**
+      context.textAlign = 'center';
+
+      // PADDING
+      const innerCenterX = boxX + boxW / 2;
+      // HEADER PADDING
+      context.fillStyle = 'black';
+      context.fillText('HIGH SCORES:', innerCenterX, boxY + 40);
+      context.fillStyle = 'white';
+      context.fillText('HIGH SCORES:', innerCenterX, boxY + 42);
+
+      // ENTRIES PADDING
+      highScores.forEach((entry, index) => {
+        let y = boxY + 85 + index * 35;
+
+        context.fillStyle = 'black';
+        context.fillText(`${entry.initials}: ${entry.score}`, innerCenterX, y);
+        context.fillStyle = 'white';
+        context.fillText(`${entry.initials}: ${entry.score}`, innerCenterX, y + 2);
+      });
+
     }
+
+
+
   }
+
 
   // ================================================
   // Implementation section:

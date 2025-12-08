@@ -45,7 +45,8 @@ body {
 
 .btn.show {
   opacity: 1;
-  pointer-events: auto;   /* enable click */
+  pointer-events: auto;
+  /* enable click */
 }
 
 .btn:hover {
@@ -81,7 +82,7 @@ body {
   z-index: 1000000;
   color: #f9fafb;
   font-family: Helvetica, sans-serif;
-} 
+}
 
 .screen-inner {
   text-align: center;
@@ -198,12 +199,12 @@ body {
   transition: all 0.5s ease-in-out;
 }
 
-.screen-inner a:hover{
+.screen-inner a:hover {
   box-shadow: 0px 0px 10px 7px #aefcfc;
   color: #020617;
   background-color: #aefcfc;
   transition: all 0.5s ease-in-out;
-} 
+}
 
 .dev-container {
   display: flex;
