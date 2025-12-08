@@ -190,8 +190,10 @@ body {
 }
 
 .screen-inner a {
+  border-radius: 3px;
   color: #aefcfc;
   font-style: italic;
+  padding: 5px;
   text-decoration: none;
   transition: all 0.5s ease-in-out;
 }
