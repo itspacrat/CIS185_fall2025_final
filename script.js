@@ -24,7 +24,9 @@ window.addEventListener('load', function () {
   let score = 0;
   let enemies = [];
   let gameOver = false;
+  let gameStart = false;
   const gameOverSound = new Audio('assets/soundeffects/wompwomp.mp3');
+  gameOverSound.volume = 0.1;
 
   // LOAD HIGH SCORES //
 let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
@@ -51,6 +53,180 @@ refreshHighScores();
     console.log('retry clicked');
     location.reload();
   });
+
+  // Call the Start screen
+  loadStartScreen();
+
+  // Load the Start screen to show the controls and show the background and enemies
+  function loadStartScreen() {
+    const startScreen = document.getElementById("startScreen");
+    startScreen.innerHTML = `
+      <div class="screen-inner">
+        <h1>Welcome!</h1>
+        <p class="screen-subtitle">Use the keys to move. Avoid Enemies!</p>
+        <div class="controls-container">
+          <!-- WASD Block -->
+          <div class="key-container">
+
+            <div class="key key-w" data-key="w">
+              W
+              <span>Jump</span>
+            </div>
+
+            <div class="key-row">
+              <div class="key key-a" data-key="a">
+                A
+                <span>Left</span>
+              </div>
+
+              <div class="key key-s" data-key="s">
+                S
+                <span>Down</span>
+              </div>
+
+              <div class="key key-d" data-key="d">
+                D
+                <span>Right</span>
+              </div>
+            </div>
+          </div>
+          <div class="key-container">
+            <!-- Arrow Up -->
+            <div class="key key-up" data-key="ArrowUp">
+              ↑
+              <span>Jump</span>
+            </div>
+
+            <!-- Arrow Left / Down / Right Row -->
+            <div class="key-row">
+              <div class="key key-left" data-key="ArrowLeft">
+              ←
+              <span>Left</span>
+            </div>
+
+            <div class="key key-down" data-key="ArrowDown">
+              ↓
+              <span>Down</span>
+            </div>
+
+            <div class="key key-right" data-key="ArrowRight">
+              →
+              <span>Right</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Space Bar -->
+        <div class="key key-space" data-key=" ">
+          Space
+          <span>Jump</span>
+          </div>
+        </div>
+        <button id="startBtn" class="start-btn btn">Start</button>
+      </div>
+    `
+    document.getElementById('startBtn').addEventListener('click', () => {
+      startScreen.style.display = "none";
+      learnMoreBtn.style.display = "none";
+      learnMoreContainer.style.display = "none";
+      gameStart = true;
+      score = 0;
+      enemies = [];
+      animate(0);
+    });
+
+  }
+
+  // Helper: flash the key when pressed
+  function flashKey(key) {
+    if (!key) return;
+    key.classList.add("active");
+    setTimeout(() => {
+      key.classList.remove("active");
+    }, 120);
+  }
+
+  // Listen for key presses on the start screen
+  window.addEventListener("keydown", (e) => {
+    // Find a matching key element by data-key="ArrowUp", etc.
+    const keyElement = document.querySelector(`.key[data-key="${e.key}"]`);
+    if (keyElement) {
+      flashKey(keyElement);
+    }
+  });
+
+  // Volumn Button controls - toggle the womp womp on and off
+  const volumeButton = document.getElementById('volumeBtn');
+
+  //set the svg for the button keeping the index file cleaner
+  volumeButton.innerHTML = `<img id="volumeIcon" src="/assets/images/volume-high-solid-full.svg" alt="Sound On">`
+
+  const volumeIcon = document.getElementById('volumeIcon');
+
+  // Monitor if the volume is on or off
+  let volumeIsOn = true;
+
+  volumeButton.addEventListener('click', () => {
+    
+    // Volume is on and user clicked it off
+    if (volumeIsOn) {
+      // set sound off
+      gameOverSound.volume = 0;
+      // change image and attributes to mute
+      volumeIcon.src ="/assets/images/volume-xmark-solid-full.svg";
+      volumeIcon.alt = "Sound off";
+      volumeButton.setAttribute("aria-label", "Unmute sound");
+    } else {
+      // set sound on
+      gameOverSound.volume = 0.1;
+      // change image and attributes to full volume
+      volumeIcon.src ="/assets/images/volume-high-solid-full.svg";
+      volumeIcon.alt = "Sound on";
+      volumeButton.setAttribute("aria-label", "Mute sound");
+    }
+    
+    // toggle volumeIsOn to the opposite value
+    volumeIsOn = !volumeIsOn;
+  });
+
+
+  // Learn More section
+  // Show a window with a link to the repo and to each developer
+  
+  const learnMoreBtn = document.getElementById("learnMoreBtn");
+  const learnMoreContainer = document.getElementById("LearnMoreContainer");
+  learnMoreBtn.addEventListener('click', () => {
+    startScreen.style.display = "none";
+    learnMoreBtn.style.display = "none";
+    learnMoreContainer.style.display = "block";
+    learnMoreContainer.innerHTML = `
+      <div class="screen-inner">
+        <h2>CIS 185 - Web Development</h2>
+        <p>Final game project side scrolling adventure<p>
+        <p>You can find the Git repository <a href="https://github.com/itspacrat/CIS185_fall2025_final/tree/main" target="_blank">here</a></p>
+        <p>Developers</p>
+        <div class="dev-container">
+          <div>Blake
+          </div>
+          <div>Dodge
+          </div>
+          <div>Jason
+          </div>
+        </div>
+        <button id="returnToGameBtn" class='btn return-to-game-btn'>return to game</button>
+      </div>
+    `
+
+    const returnToGameBtn = document.getElementById("returnToGameBtn");
+
+    returnToGameBtn.addEventListener('click', () =>{
+      startScreen.style.display = "block";
+      learnMoreContainer.style.display = "none";
+      learnMoreBtn.style.display = "block";
+    })
+
+  })
+
 
 // SAVE BUTTON AND INITIALS INPUT //
 
@@ -420,16 +596,34 @@ document.getElementById('clearScoresBtn').addEventListener('click', () => {
     background.update();
     displayStatusText(ctx); // draw the score card
 
-
-    if (!gameOver) {
+        if (!gameOver) {
   requestAnimationFrame(animate);
     } else {
     document.querySelector('.highScoreBox').style.display = 'block';
   }
+}
 
+
+
+  // Demo of the background to run while start menu
+  function welcomeDemo(timeStamp) {
+    if (gameStart) return;
+
+    // most screens run at 60fps
+    const deltaTime = timeStamp - lastTime; // 29:00 talks about delta time (requestAnimationFrame auto creates a timeStamp)
+    // console.log(deltaTime) // 1000ms/xfps (my fps is 240HZ, if yours is at 60fps, deltaTime is around 16)
+    lastTime = timeStamp;
+    // on each render, clear the previous player drawing.
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    background.draw(ctx);
+    handleEnemies(deltaTime); // draw the enemies
+
+    background.update();
+    requestAnimationFrame(welcomeDemo)
   }
 
+  welcomeDemo(0);
   // endless loop!
-  animate(0);
+  // animate(0);
 });
 

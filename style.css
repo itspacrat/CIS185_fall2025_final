@@ -1,5 +1,5 @@
 body {
-  background: rgb(58, 88, 88);
+  background: #3a5858;
 }
 
 #canvas1 {
@@ -17,13 +17,7 @@ body {
   display: none;
 }
 
-/* ALL THE BUTTONS */
-
-#retryBtn {
-  position: absolute;
-  top: 40%;
-  left: 45%;
-  transform: translateX(-50%);
+.btn {
   padding: 15px 30px;
   font-size: 1.2rem;
   font-weight: bold;
@@ -37,13 +31,190 @@ body {
   display: none;
 }
 
-#retryBtn.show {
+.start-btn {
+  display: block;
+  margin: auto;
+}
+
+.retry-btn {
+  position: absolute;
+  top: 45%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.btn.show {
   opacity: 1;
   pointer-events: auto;   /* enable click */
 }
 
-#retryBtn:hover {
+.btn:hover {
   background-color: rgb(90, 170, 170);
+}
+
+.volumeBtn {
+  border: 2px outset #f9fafb;
+  box-shadow: -1px -1px 1px 1px #020617;
+  position: fixed;
+  top: 13%;
+  left: 67.5%;
+  background: transparent;
+  height: 50px;
+  width: 50px;
+  opacity: 0.5;
+}
+
+.volumeBtn:active {
+  border: 2px inset;
+  box-shadow: 1px 1px 1px 1px #020617;
+}
+
+
+/* start menu overlay */
+.info-container {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-55%);
+  height: 375px;
+  width: 500px;
+  z-index: 1000000;
+  color: #f9fafb;
+  font-family: Helvetica, sans-serif;
+} 
+
+.screen-inner {
+  text-align: center;
+  padding: 2rem 2.5rem;
+  background: rgba(15, 23, 42, 0.95);
+  border-radius: 12px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  max-width: 480px;
+  width: 100%;
+}
+
+.screen-inner h1 {
+  margin: 0 0 0.5rem;
+  font-size: 2rem;
+  text-shadow: 2px 2px rgb(0, 0, 0);
+}
+
+.screen-subtitle {
+  margin: 0 0 1.5rem;
+  font-size: 0.95rem;
+  text-shadow: 2px 2px rgb(0, 0, 0);
+}
+
+/* Controls layout */
+.controls-container {
+  display: grid;
+  justify-content: center;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.key-row {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.key-space {
+  grid-column: 1 / span 2;
+  justify-self: center;
+  width: 200px;
+}
+
+/* Individual "key" boxes */
+.key {
+  min-width: 56px;
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  border: 2px solid #4b5563;
+  background: #020617;
+  font-size: 1.2rem;
+  font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.15rem;
+  transition: transform 0.08s ease, border-color 0.08s ease, background-color 0.08s ease;
+}
+
+.key span {
+  font-size: 0.7rem;
+  font-weight: 400;
+  color: #f9fafb;
+  text-shadow: 2px 2px rgb(0, 0, 0);
+}
+
+/* Highlight when the key is "pressed" */
+.key.active {
+  transform: translateY(2px);
+  border-color: #38bdf8;
+  background: #0f172a;
+}
+
+/* Hint text */
+.screen-hint {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #e5e7eb;
+}
+
+.key-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.key-space {
+  margin-top: 20px;
+  padding: 10px 40px;
+}
+
+
+/* Learn more section */
+
+/* Learn More button */
+.learnMore {
+  position: absolute;
+  display: block;
+  bottom: 4%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.screen-inner a {
+  border-radius: 3px;
+  color: #aefcfc;
+  font-style: italic;
+  padding: 5px;
+  text-decoration: none;
+  transition: all 0.5s ease-in-out;
+}
+
+.screen-inner a:hover{
+  box-shadow: 0px 0px 10px 7px #aefcfc;
+  color: #020617;
+  background-color: #aefcfc;
+  transition: all 0.5s ease-in-out;
+} 
+
+.dev-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  height: 50px;
+}
+
+.return-to-game-btn {
+  display: block;
+  margin: 20px auto;
 }
 
 #initialsInput {
