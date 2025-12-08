@@ -322,98 +322,91 @@ window.addEventListener('load', function () {
    * @returns 
    */
   function isColliding(a, b) {
-    const dx = (b.x + b.width / 2) - (a.x + a.width / 2);
-    const dy = (b.y + b.height / 2) - (a.y + a.height / 2);
+    const dx = (b.x + b.sprite.spriteWidth / 2) - (a.x + a.sprite.spriteWidth / 2);
+    const dy = (b.y + b.sprite.spriteHeight / 2) - (a.y + a.sprite.spriteHeight / 2);
     const distance = Math.sqrt(dx * dx + dy * dy);
-    return (distance < b.width / 2 + a.width / 2);
+    if (distance < b.sprite.spriteWidth / 2 + a.sprite.spriteWidth / 2) {
+      console.log(a + " colided with " + b);
+    }
+    return (distance < b.sprite.spriteWidth / 2 + a.sprite.spriteWidth / 2);
   }
 
   class SpriteManager {
+    /**
+     * 
+     * @param {number} spriteWidth the width of a sprite's frame
+     * @param {number} spriteHeight the height of a sprite's frame
+     * @param {string} spriteSheet html element with a spritesheet image
+     */
     constructor(spriteWidth, spriteHeight, spriteSheet) {
+      // parametric assignments
       this.spriteWidth = spriteWidth;
       this.spriteHeight = spriteHeight;
       this.spriteSheet = spriteSheet;
-
+      // default assignments
+      this.frameX = 0;
+      this.frameY = 0;
+      this.maxFrame = 1 // default 1 frame
+      this.frameTimer = 0;
+      this.fps = 20;
+      this.frameInterval = 1000 / this.fps;
     }
   }
-
+  /**
+   * An object with a SpriteManager and a position
+   */
   class GameObject {
-    isCollidingWith(b) {
-      return isColliding(this, b);
-    }
+    /**
+     * 
+     * @param {number} gameWidth the canvas width
+     * @param {number} gameHeight the canvas height
+     */
     constructor(gameWidth, gameHeight, spriteWidth, spriteHeight, spriteSheet) {
       this.gameWidth = gameWidth;
       this.gameHeight = gameHeight;
       this.sprite = new SpriteManager(spriteWidth, spriteHeight, spriteSheet);
-      this.frameX = 0;
-      this.frameY = 0;
 
-      this.speed = 0;
-      this.velocityY = 0;
+      this.x = 0;
+      this.y = 0;
 
-      //this.weight = 1;
-
-      this.maxFrame = 8;
-
-      this.fps = 20;
-      this.frameTimer = 0;
-      this.frameInterval = 1000 / this.fps;
-      // this.spriteWidth = spriteWidth; // 200 for players
-      // this.spriteHeight = spriteHeight; // 200 for players
     }
-  }
-
-  class Player extends GameObject {
 
     isCollidingWith(b) {
       return isColliding(this, b);
     }
+  }
+
+  class Player extends GameObject {
     constructor(gameWidth, gameHeight, spriteWidth, spriteHeight, spriteSheet) {
-      super(gameWidth, gameHeight, spriteWidth, spriteHeight)
-      // this.gameWidth = gameWidth;
-      // this.gameHeight = gameHeight;
-      // this.width = 200;
-      // this.height = 200;
-
-      // this.x = 0;
-      // this.y = this.gameHeight - this.height;
-      // this.image = document.getElementById('playerImage');
-
-      // this.frameX = 0;
-      // this.frameY = 0;
-
-      // this.speed = 0;
-      // this.velocityY = 0;
-
-      // this.weight = 1;
-
-      // this.maxFrame = 8;
-
-      // this.fps = 20;
-      // this.frameTimer = 0;
-      // this.frameInterval = 1000 / this.fps;
+      // put these in the parent class where they go
+      super(gameWidth, gameHeight, spriteWidth, spriteHeight, spriteSheet)
+      // player-specific 
+      this.sprite.maxFrame = 8; // update max frame here
+      this.x = 0;
+      this.y = this.gameHeight - this.sprite.spriteHeight;
+      this.weight = 1;
+      this.velocityY = 0;
+      this.weight = 1;
+      this.speed = 0;
     }
 
     draw(context) {
-      // NOTE: uncomment to draw a white box around the player (helpful for debugging)
-      // context.fillStyle = 'white';
-      // context.fillRect(this.x, this.y, this.width, this.height);
 
       // collision box test
       context.strokeStyle = 'white';
-      context.strokeRect(this.x, this.y, this.width, this.height);
+      context.strokeRect(this.x, this.y, this.sprite.spriteWidth, this.sprite.spriteHeight);
       context.beginPath();
       context.strokeStyle = "blue";
-      context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
+      context.arc(this.x + this.sprite.spriteWidth / 2, this.y + this.sprite.spriteHeight / 2, this.sprite.spriteWidth / 2, 0, Math.PI * 2);
       context.stroke();
       // sx through sh helps create a bounding box around a single pose of the character from the spritesheet.
       // check 15:00 min in video to see.
-      let sx = this.frameX * this.width;
-      let sy = this.frameY * this.height;
-      let sw = this.width
-      let sh = this.height
+      let sx = this.sprite.frameX * this.sprite.spriteWidth;
+      let sy = this.sprite.frameY * this.sprite.spriteHeight;
+      let sw = this.sprite.spriteWidth
+      let sh = this.sprite.spriteHeight
 
-      context.drawImage(this.image, sx, sy, sw, sh, this.x, this.y, this.width, this.height);
+      context.drawImage(this.sprite.spriteSheet, sx, sy, sw, sh, this.x, this.y, this.sprite.spriteWidth, this.sprite.spriteHeight);
     }
 
 
@@ -423,6 +416,7 @@ window.addEventListener('load', function () {
         // utilize isCollidingWith method
         if (this.isCollidingWith(enemy)) {
           if (!gameOver) {
+            console.log("puppy collides with " + enemy)
             gameOverSound.play();
             document.getElementById('retryBtn').style.display = 'block';
             document.getElementById('initialsInput').style.display = 'block';
@@ -436,12 +430,12 @@ window.addEventListener('load', function () {
 
       // sprite animation
       // 36:16 talks about the animation framing
-      if (this.frameTimer > this.frameInterval) {
-        if (this.frameX >= this.maxFrame) this.frameX = 0;
-        else this.frameX++;
-        this.frameTimer = 0;
+
+      if (this.sprite.frameTimer > this.sprite.frameInterval) {
+        this.sprite.frameX = (this.sprite.frameX + 1) % this.sprite.maxFrame;
+        this.sprite.frameTimer = 0;
       } else {
-        this.frameTimer += deltaTime;
+        this.sprite.frameTimer += deltaTime;
       }
       // controls
       if (input.keys.indexOf('ArrowRight') > -1 || input.keys.indexOf('d') > -1) {
@@ -466,8 +460,8 @@ window.addEventListener('load', function () {
       // horizontal movement
       // don't let character x position go passed the left and right border
       if (this.x < 0) this.x = 0;
-      if (this.x > this.gameWidth - this.width) {
-        this.x = this.gameWidth - this.width
+      if (this.x > this.gameWidth - this.sprite.spriteWidth) {
+        this.x = this.gameWidth - this.sprite.spriteWidth
       }
       this.x += this.speed;
 
@@ -477,70 +471,83 @@ window.addEventListener('load', function () {
       if (!this.onGround()) {
         this.velocityY += this.weight; // gravity pulls down
         this.maxFrame = 5;
-        this.frameY = 1; // use the jumping animation
+        this.sprite.frameY = 1; // use the jumping animation
       } else {
         this.velocityY = 0;
         this.maxFrame = 8;
-        this.frameY = 0;
-        this.y = this.gameHeight - this.height; // snap to floor
+        this.sprite.frameY = 0;
+        this.y = this.gameHeight - this.sprite.spriteHeight; // snap to floor
       }
     }
 
     // helper method for vertical movement
     onGround() {
-      return this.y >= this.gameHeight - this.height;
+      return this.y >= this.gameHeight - this.sprite.spriteHeight;
     }
   }
   class Enemy extends GameObject {
-    constructor() {
-      this.gameWidth = gameWidth;
-      this.gameHeight = gameHeight;
-      this.width = 160;
-      this.height = 119;
-      this.image = document.getElementById('enemyImage');
+    constructor(gameWidth, gameHeight, spriteWidth, spriteHeight, spriteSheet) {
+      // have the parent class deal with these
+      super(gameWidth, gameHeight, spriteWidth, spriteHeight, spriteSheet)
+      // enemy specific
+      this.speed = 5;
       this.x = this.gameWidth;
-      this.y = this.gameHeight - this.height;
-
-      // frame handling to cycle between spritesheet.
-      this.frameX = 0;
-      this.frameTimer = 0;
-      this.maxFrame = 5;
-      this.fps = 20;
-      this.frameInterval = 1000 / this.fps;
-      this.speed = 8;
-
+      this.y = this.gameHeight - this.sprite.spriteHeight;
+      this.sprite.maxFrame = 3;
       this.markedForDeletion = false;
     }
     draw(context) {
       context.strokeStyle = 'white';
-      context.strokeRect(this.x, this.y, this.width, this.height);
+      context.strokeRect(this.x, this.y, this.sprite.spriteWidth, this.sprite.spriteHeight);
 
       context.beginPath();
       context.strokeStyle = "blue";
-      context.arc(this.x + this.width / 2, this.y + this.height / 2, this.width / 2, 0, Math.PI * 2);
+      context.arc(this.x + this.sprite.spriteWidth / 2, this.y + this.sprite.spriteHeight / 2, this.sprite.spriteWidth / 2, 0, Math.PI * 2);
       context.stroke();
 
       context.beginPath();
       context.strokeStyle = 'red'
-      context.arc(this.x, this.y, this.width / 2, 0, Math.PI * 2);
+      context.arc(this.x, this.y, this.sprite.spriteWidth / 2, 0, Math.PI * 2);
       context.stroke();
 
       // draw the enemy
-      context.drawImage(this.image, this.frameX * this.width, 0,
-        this.width, this.height, this.x, this.y, this.width, this.height);
+      context.drawImage(
+        this.sprite.spriteSheet,
+        this.sprite.frameX * this.sprite.spriteWidth,
+        0,
+        this.sprite.spriteWidth,
+        this.sprite.spriteHeight,
+        this.x,
+        this.y,
+        this.sprite.spriteWidth,
+        this.sprite.spriteHeight
+      );
     }
     update(deltaTime) {
-      // cycle between frames
-      if (this.frameTimer > this.frameInterval) {
-        if (this.frameX >= this.maxFrame) this.frameX = 0;
-        else this.frameX++;
-        this.frameTimer = 0;
-      } else {
-        this.frameTimer += deltaTime;
-      }
+
+      // move the enemy
       this.x -= this.speed;
+
+      // cycle between frames
+      if (this.sprite.frameTimer > this.sprite.frameInterval) {
+        this.sprite.frameX = (this.sprite.frameX + 1) % this.sprite.maxFrame
+        this.sprite.frameTimer = 0;
+      } else {
+        this.sprite.frameTimer += deltaTime;
+      }
+
+      // DEBUG -- comment out when not using
+      // console.log(
+      //   "timer: " + this.sprite.frameTimer +
+      //   "\ninterval: " + this.sprite.frameInterval +
+      //   "\nframeX : " + this.sprite.frameX +
+      //   "\nframey: " + this.frameY +
+      //   "\nmaxFrames" + this.sprite.maxFrame +
+      //   "\nspritesheet width: " + this.sprite.spriteSheet.width
+      // );
+
       // if the enemey has moved off screen, mark it for deletion.
-      if (this.x < 0 - this.width) {
+      if (this.x < 0 - this.sprite.spriteWidth) {
         this.markedForDeletion = true;
         score++;
       }
@@ -570,14 +577,12 @@ window.addEventListener('load', function () {
     }
   }
 
-
-
   // enemies.push(new Enemy(canvas.width, canvas.height));
   function handleEnemies(deltaTime) {
     // console.log(enemies)
     // push enemies into the arracy
     if (enemyTimer > enemyInterval + randomEnemyInterval) {
-      enemies.push(new Enemy(canvas.width, canvas.height));
+      enemies.push(new Enemy(canvas.width, canvas.height, 160, 119, document.getElementById('enemyImage')));
       randomEnemyInterval = Math.random() * 1000 + 500;
       enemyTimer = 0;
     } else {
@@ -666,7 +671,7 @@ window.addEventListener('load', function () {
   // Implementation section:
   // make use of classes below to generate the game.
   const input = new InputHandler();
-  const player = new Player(canvas.width, canvas.height);
+  const player = new Player(canvas.width, canvas.height, 200, 200, document.getElementById('playerImage'));
   const background = new Background(canvas.width, canvas.height);
 
   let lastTime = 0;
