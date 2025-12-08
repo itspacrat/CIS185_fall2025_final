@@ -105,7 +105,8 @@ window.addEventListener('load', function () {
     `
     document.getElementById('startBtn').addEventListener('click', () => {
       startScreen.style.display = "none";
-      learnMoreBtn.style.display = "none"
+      learnMoreBtn.style.display = "none";
+      learnMoreContainer.style.display = "none";
       gameStart = true;
       score = 0;
       enemies = [];
