@@ -25,6 +25,9 @@ window.addEventListener('load', function () {
   let enemies = [];
   let gameOver = false;
   let gameStart = false;
+  let lives = 3;
+  let invunerable = false;
+  let invunerableCounter = 0;
   const gameOverSound = new Audio('assets/soundeffects/wompwomp.mp3');
   gameOverSound.volume = 0.1;
 
@@ -132,6 +135,7 @@ window.addEventListener('load', function () {
       gameStart = true;
       score = 0;
       enemies = [];
+      updateLifeBar();
       animate(0);
     });
 
@@ -275,6 +279,24 @@ window.addEventListener('load', function () {
     refreshHighScores();
   });
 
+  // Update life bar
+  function updateLifeBar() {
+    const lifeBar = document.getElementById('lifeBar');
+
+    if (lifeBar.lastChild) lifeBar.lastChild.classList.add("heart-lost");
+
+    // Clear the life bar first so it doesn't duplicate hearts
+    lifeBar.innerHTML = "";
+
+    for (let i = 0; i < lives; i++) {
+      const heart = document.createElement("span");
+      heart.textContent = "❤️";
+      heart.classList.add("heart");
+      lifeBar.appendChild(heart);
+    }
+  }
+
+
 
   class InputHandler {
     constructor() {
@@ -413,18 +435,33 @@ window.addEventListener('load', function () {
     update(input, deltaTime) {
       // collistion detection (watch 43:15 to see pythagerous theorem in action)
       enemies.forEach(enemy => {
+        console.log(invunerable);
         // utilize isCollidingWith method
         if (this.isCollidingWith(enemy)) {
-          if (!gameOver) {
-            console.log("puppy collides with " + enemy)
-            gameOverSound.play();
-            document.getElementById('retryBtn').style.display = 'block';
-            document.getElementById('initialsInput').style.display = 'block';
-            document.getElementById('saveScoreBtn').style.display = 'block';
-            document.getElementById('clearScoresBtn').style.display = 'block';
 
+          // If the user got hit by an enemy make them invunerable until the next enemy
+          if (invunerable) {
+            invunerableCounter++;
+            if (invunerableCounter == 60){
+              invunerableCounter = 0;
+              invunerable = false;
+            }
+          } else {
+            // Take away one life and set the user to invunerable. 
+            lives--;
+            updateLifeBar();
+            invunerable = true;
+            // When the last life is lost lose the game
+            if (lives === 0) {
+              console.log("puppy collides with " + enemy)
+              gameOverSound.play();
+              document.getElementById('retryBtn').style.display = 'block';
+              document.getElementById('initialsInput').style.display = 'block';
+              document.getElementById('saveScoreBtn').style.display = 'block';
+              document.getElementById('clearScoresBtn').style.display = 'block';
+              gameOver = true;
+            }
           }
-          gameOver = true
         }
       })
 
