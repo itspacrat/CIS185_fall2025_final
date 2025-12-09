@@ -63,6 +63,7 @@ window.addEventListener('load', function () {
   // Load the Start screen to show the controls and show the background and enemies
   function loadStartScreen() {
     const startScreen = document.getElementById("startScreen");
+    startScreen.style.display = "block";
     startScreen.innerHTML = `
       <div class="screen-inner">
         <h1>Welcome!</h1>
@@ -198,7 +199,7 @@ window.addEventListener('load', function () {
   // Show a window with a link to the repo and to each developer
 
   const learnMoreBtn = document.getElementById("learnMoreBtn");
-  const learnMoreContainer = document.getElementById("LearnMoreContainer");
+  const learnMoreContainer = document.getElementById("learnMoreContainer");
   learnMoreBtn.addEventListener('click', () => {
     startScreen.style.display = "none";
     learnMoreBtn.style.display = "none";
@@ -455,6 +456,7 @@ window.addEventListener('load', function () {
             if (lives === 0) {
               console.log("puppy collides with " + enemy)
               gameOverSound.play();
+              document.getElementById('highScoreContainer').style.display = 'block';
               document.getElementById('retryBtn').style.display = 'block';
               document.getElementById('initialsInput').style.display = 'block';
               document.getElementById('saveScoreBtn').style.display = 'block';
@@ -734,7 +736,7 @@ window.addEventListener('load', function () {
     if (!gameOver) {
       requestAnimationFrame(animate);
     } else {
-      document.querySelector('.highScoreBox').style.display = 'block';
+      document.getElementById('highScoreContainer').style.display = 'block';
     }
   }
 

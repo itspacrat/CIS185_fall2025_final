@@ -84,6 +84,7 @@ body {
   position: absolute;
   top: 20%;
   left: 50%;
+  display: none;
   transform: translateX(-55%);
   height: 375px;
   width: 500px;
