@@ -71,13 +71,14 @@ body {
 
 /* start menu overlay */
 .info-container {
+  box-sizing: border-box;
   position: absolute;
   top: 20%;
   left: 50%;
   display: none;
-  transform: translateX(-55%);
-  height: 375px;
-  width: 500px;
+  transform: translateX(-50%);
+  min-height: 375px;
+  min-width: 500px;
   z-index: 1000000;
   color: #f9fafb;
   font-family: Helvetica, sans-serif;
@@ -90,7 +91,6 @@ body {
   border-radius: 12px;
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
   max-width: 480px;
-  width: 100%;
 }
 
 .screen-inner h1 {

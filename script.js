@@ -263,13 +263,12 @@ window.addEventListener('load', function () {
     highScores.sort((a, b) => b.score - a.score);
     highScores = highScores.slice(0, 5);
     refreshHighScores();
-
+    
     // HIDE UI
     initialsInput.style.display = 'none';
     saveScoreBtn.style.display = 'none';
 
     alert("Score Saved!");
-
   });
 
 
@@ -457,10 +456,10 @@ window.addEventListener('load', function () {
               console.log("puppy collides with " + enemy)
               gameOverSound.play();
               document.getElementById('highScoreContainer').style.display = 'block';
-              document.getElementById('retryBtn').style.display = 'block';
-              document.getElementById('initialsInput').style.display = 'block';
-              document.getElementById('saveScoreBtn').style.display = 'block';
-              document.getElementById('clearScoresBtn').style.display = 'block';
+              // document.getElementById('retryBtn').style.display = 'block';
+              // document.getElementById('initialsInput').style.display = 'block';
+              // document.getElementById('saveScoreBtn').style.display = 'block';
+              // document.getElementById('clearScoresBtn').style.display = 'block';
               gameOver = true;
             }
           }
@@ -643,63 +642,63 @@ window.addEventListener('load', function () {
     context.fillStyle = 'white';
     context.fillText('Score: ' + score, 20, 52);
 
-    // lose display
-    if (gameOver) {
+  //   // lose display
+  //   if (gameOver) {
       
-      // context.textAlign = 'center';
-      // context.fillStyle = 'black';
-      // context.fillText('Game Over, try again!', canvas.width / 2, 200);
-      // context.fillStyle = 'white';
-      // context.fillText('Game Over, try again!', canvas.width / 2, 202);
+  //     // context.textAlign = 'center';
+  //     // context.fillStyle = 'black';
+  //     // context.fillText('Game Over, try again!', canvas.width / 2, 200);
+  //     // context.fillStyle = 'white';
+  //     // context.fillText('Game Over, try again!', canvas.width / 2, 202);
 
 
-      // // ===== HIGH SCORE DISPLAY LOGIC =====
+  //     // // ===== HIGH SCORE DISPLAY LOGIC =====
 
-      // // LOAD
-      // let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+  //     // // LOAD
+  //     // let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
 
-      // // SORT
-      // highScores.sort((a, b) => b.score - a.score);
+  //     // // SORT
+  //     // highScores.sort((a, b) => b.score - a.score);
 
-      // // TOP 5
-      // highScores = highScores.slice(0, 5);
+  //     // // TOP 5
+  //     // highScores = highScores.slice(0, 5);
 
-      // // === BACKGROUND BOX BEHIND HIGH SCORES ===
-      // const boxX = canvas.width - 350;
-      // const boxY = 230;
-      // const boxW = 300;
-      // const boxH = 250;
+  //     // // === BACKGROUND BOX BEHIND HIGH SCORES ===
+  //     // const boxX = canvas.width - 350;
+  //     // const boxY = 230;
+  //     // const boxW = 300;
+  //     // const boxH = 250;
 
-      // context.fillStyle = 'rgba(0,0,0,1)';
-      // context.fillRect(boxX, boxY, boxW, boxH);
+  //     // context.fillStyle = 'rgba(0,0,0,1)';
+  //     // context.fillRect(boxX, boxY, boxW, boxH);
 
-      // // BORDER 
-      // context.strokeStyle = 'white';
-      // context.lineWidth = 3;
-      // context.strokeRect(boxX, boxY, boxW, boxH);
+  //     // // BORDER 
+  //     // context.strokeStyle = 'white';
+  //     // context.lineWidth = 3;
+  //     // context.strokeRect(boxX, boxY, boxW, boxH);
 
-      // // CENTER text **inside the box**
-      // context.textAlign = 'center';
+  //     // // CENTER text **inside the box**
+  //     // context.textAlign = 'center';
 
-      // // PADDING
-      // const innerCenterX = boxX + boxW / 2;
-      // // HEADER PADDING
-      // context.fillStyle = 'black';
-      // context.fillText('HIGH SCORES:', innerCenterX, boxY + 40);
-      // context.fillStyle = 'white';
-      // context.fillText('HIGH SCORES:', innerCenterX, boxY + 42);
+  //     // // PADDING
+  //     // const innerCenterX = boxX + boxW / 2;
+  //     // // HEADER PADDING
+  //     // context.fillStyle = 'black';
+  //     // context.fillText('HIGH SCORES:', innerCenterX, boxY + 40);
+  //     // context.fillStyle = 'white';
+  //     // context.fillText('HIGH SCORES:', innerCenterX, boxY + 42);
 
-      // // ENTRIES PADDING
-      // highScores.forEach((entry, index) => {
-      //   let y = boxY + 85 + index * 35;
+  //     // // ENTRIES PADDING
+  //     // highScores.forEach((entry, index) => {
+  //     //   let y = boxY + 85 + index * 35;
 
-      //   context.fillStyle = 'black';
-      //   context.fillText(`${entry.initials}: ${entry.score}`, innerCenterX, y);
-      //   context.fillStyle = 'white';
-      //   context.fillText(`${entry.initials}: ${entry.score}`, innerCenterX, y + 2);
-      // });
+  //     //   context.fillStyle = 'black';
+  //     //   context.fillText(`${entry.initials}: ${entry.score}`, innerCenterX, y);
+  //     //   context.fillStyle = 'white';
+  //     //   context.fillText(`${entry.initials}: ${entry.score}`, innerCenterX, y + 2);
+  //     // });
 
-    }
+  //   }
 
 
 
