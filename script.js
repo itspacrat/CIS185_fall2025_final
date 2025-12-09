@@ -393,7 +393,12 @@ window.addEventListener('load', function () {
       this.y = 0;
 
     }
-
+    /**
+     * Check if this GameObject colliding with GameObject `b`
+     * 
+     * @param {GameObject} b the object to check collisions against
+     * @returns 
+     */
     isCollidingWith(b) {
       return isColliding(this, b);
     }
@@ -416,12 +421,12 @@ window.addEventListener('load', function () {
     draw(context) {
 
       // collision box test
-      context.strokeStyle = 'white';
-      context.strokeRect(this.x, this.y, this.sprite.spriteWidth, this.sprite.spriteHeight);
-      context.beginPath();
-      context.strokeStyle = "blue";
-      context.arc(this.x + this.sprite.spriteWidth / 2, this.y + this.sprite.spriteHeight / 2, this.sprite.spriteWidth / 2, 0, Math.PI * 2);
-      context.stroke();
+      // context.strokeStyle = 'white';
+      // context.strokeRect(this.x, this.y, this.sprite.spriteWidth, this.sprite.spriteHeight);
+      // context.beginPath();
+      // context.strokeStyle = "blue";
+      // context.arc(this.x + this.sprite.spriteWidth / 2, this.y + this.sprite.spriteHeight / 2, this.sprite.spriteWidth / 2, 0, Math.PI * 2);
+      // context.stroke();
       // sx through sh helps create a bounding box around a single pose of the character from the spritesheet.
       // check 15:00 min in video to see.
       let sx = this.sprite.frameX * this.sprite.spriteWidth;
@@ -511,7 +516,7 @@ window.addEventListener('load', function () {
         this.velocityY += this.weight; // gravity pulls down
         this.maxFrame = 1;
         this.sprite.frameY = 1; // use the jumping animation
-        this.sprite.frameX = 0
+        this.sprite.frameX = 0 // hacky jump anim flash fix
       } else {
         this.velocityY = 0;
         this.maxFrame = 8;
@@ -537,18 +542,18 @@ window.addEventListener('load', function () {
       this.markedForDeletion = false;
     }
     draw(context) {
-      context.strokeStyle = 'white';
-      context.strokeRect(this.x, this.y, this.sprite.spriteWidth, this.sprite.spriteHeight);
+      // context.strokeStyle = 'white';
+      // context.strokeRect(this.x, this.y, this.sprite.spriteWidth, this.sprite.spriteHeight);
 
-      context.beginPath();
-      context.strokeStyle = "blue";
-      context.arc(this.x + this.sprite.spriteWidth / 2, this.y + this.sprite.spriteHeight / 2, this.sprite.spriteWidth / 2, 0, Math.PI * 2);
-      context.stroke();
+      // context.beginPath();
+      // context.strokeStyle = "blue";
+      // context.arc(this.x + this.sprite.spriteWidth / 2, this.y + this.sprite.spriteHeight / 2, this.sprite.spriteWidth / 2, 0, Math.PI * 2);
+      // context.stroke();
 
-      context.beginPath();
-      context.strokeStyle = 'red'
-      context.arc(this.x, this.y, this.sprite.spriteWidth / 2, 0, Math.PI * 2);
-      context.stroke();
+      // context.beginPath();
+      // context.strokeStyle = 'red'
+      // context.arc(this.x, this.y, this.sprite.spriteWidth / 2, 0, Math.PI * 2);
+      // context.stroke();
 
       // draw the enemy
       context.drawImage(
@@ -575,16 +580,6 @@ window.addEventListener('load', function () {
       } else {
         this.sprite.frameTimer += deltaTime;
       }
-
-      // DEBUG -- comment out when not using
-      // console.log(
-      //   "timer: " + this.sprite.frameTimer +
-      //   "\ninterval: " + this.sprite.frameInterval +
-      //   "\nframeX : " + this.sprite.frameX +
-      //   "\nframey: " + this.frameY +
-      //   "\nmaxFrames" + this.sprite.maxFrame +
-      //   "\nspritesheet width: " + this.sprite.spriteSheet.width
-      // );
 
       // if the enemey has moved off screen, mark it for deletion.
       if (this.x < 0 - this.sprite.spriteWidth) {
@@ -617,7 +612,6 @@ window.addEventListener('load', function () {
     }
   }
 
-  // enemies.push(new Enemy(canvas.width, canvas.height));
   function handleEnemies(deltaTime) {
     // console.log(enemies)
     // push enemies into the arracy
