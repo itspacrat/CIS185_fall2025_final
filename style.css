@@ -188,9 +188,9 @@ body {
 
 /* Learn More button */
 .learnMore {
-  position: absolute;
+  position: relative;
   display: block;
-  bottom: 4%;
+  top: 97%;
   left: 50%;
   transform: translateX(-50%);
 }
