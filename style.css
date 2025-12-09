@@ -2,13 +2,18 @@ body {
   background: #3a5858;
 }
 
-#canvas1 {
+#canvas1, #canvasContainer {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   border: 5px solid rgb(73, 139, 139);
-  filter: opacity(0.5);
+  /* filter: opacity(0.5); */
+}
+
+#canvasContainer {
+  height: 720px;
+  width: 800px;
 }
 
 #playerImage,
@@ -59,9 +64,9 @@ body {
 .volumeBtn {
   border: 2px outset #f9fafb;
   box-shadow: -1px -1px 1px 1px #020617;
-  position: fixed;
-  top: 13%;
-  left: 67.5%;
+  position: relative;
+  top: 3%;
+  left: 91%;
   background: transparent;
   height: 50px;
   width: 50px;
@@ -307,6 +312,9 @@ body {
   display: flex;
   gap: 5px;
   font-size: 24px;
+  position: relative;
+  top: 10%;
+  left: 2%;
 }
 
 .heart {
@@ -318,6 +326,6 @@ body {
 }
 
 @keyframes popOut {
-  0% { transform: scale(1); opacity: 1; }
+  0% { transform: scale(1.5); opacity: 1; }
   100% { transform: scale(0); opacity: 0; }
 }
