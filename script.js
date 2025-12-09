@@ -246,7 +246,7 @@ window.addEventListener('load', function () {
       alert("Enter initials first!");
       return;
     }
-    
+
     highScores = JSON.parse(localStorage.getItem('highScores')) || [];
 
 
@@ -443,7 +443,7 @@ window.addEventListener('load', function () {
           // If the user got hit by an enemy make them invincible until the next enemy
           if (invincible) {
             invincibleCounter++;
-            if (invincibleCounter == 60){
+            if (invincibleCounter == 60) {
               invincibleCounter = 0;
               invincible = false;
             }
@@ -471,7 +471,7 @@ window.addEventListener('load', function () {
       // 36:16 talks about the animation framing
 
       if (this.sprite.frameTimer > this.sprite.frameInterval) {
-        this.sprite.frameX = (this.sprite.frameX + 1) % this.sprite.maxFrame;
+        this.sprite.frameX = (this.sprite.frameX + 1) % (this.sprite.maxFrame + 1);
         this.sprite.frameTimer = 0;
       } else {
         this.sprite.frameTimer += deltaTime;
@@ -509,8 +509,9 @@ window.addEventListener('load', function () {
       // if character is in the air, apply gravity. else character is on the ground.
       if (!this.onGround()) {
         this.velocityY += this.weight; // gravity pulls down
-        this.maxFrame = 5;
+        this.maxFrame = 1;
         this.sprite.frameY = 1; // use the jumping animation
+        this.sprite.frameX = 0
       } else {
         this.velocityY = 0;
         this.maxFrame = 8;
@@ -643,63 +644,63 @@ window.addEventListener('load', function () {
     context.fillStyle = 'white';
     context.fillText('Score: ' + score, 20, 52);
 
-  //   // lose display
-  //   if (gameOver) {
-      
-  //     // context.textAlign = 'center';
-  //     // context.fillStyle = 'black';
-  //     // context.fillText('Game Over, try again!', canvas.width / 2, 200);
-  //     // context.fillStyle = 'white';
-  //     // context.fillText('Game Over, try again!', canvas.width / 2, 202);
+    //   // lose display
+    //   if (gameOver) {
+
+    //     // context.textAlign = 'center';
+    //     // context.fillStyle = 'black';
+    //     // context.fillText('Game Over, try again!', canvas.width / 2, 200);
+    //     // context.fillStyle = 'white';
+    //     // context.fillText('Game Over, try again!', canvas.width / 2, 202);
 
 
-  //     // // ===== HIGH SCORE DISPLAY LOGIC =====
+    //     // // ===== HIGH SCORE DISPLAY LOGIC =====
 
-  //     // // LOAD
-  //     // let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+    //     // // LOAD
+    //     // let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
 
-  //     // // SORT
-  //     // highScores.sort((a, b) => b.score - a.score);
+    //     // // SORT
+    //     // highScores.sort((a, b) => b.score - a.score);
 
-  //     // // TOP 5
-  //     // highScores = highScores.slice(0, 5);
+    //     // // TOP 5
+    //     // highScores = highScores.slice(0, 5);
 
-  //     // // === BACKGROUND BOX BEHIND HIGH SCORES ===
-  //     // const boxX = canvas.width - 350;
-  //     // const boxY = 230;
-  //     // const boxW = 300;
-  //     // const boxH = 250;
+    //     // // === BACKGROUND BOX BEHIND HIGH SCORES ===
+    //     // const boxX = canvas.width - 350;
+    //     // const boxY = 230;
+    //     // const boxW = 300;
+    //     // const boxH = 250;
 
-  //     // context.fillStyle = 'rgba(0,0,0,1)';
-  //     // context.fillRect(boxX, boxY, boxW, boxH);
+    //     // context.fillStyle = 'rgba(0,0,0,1)';
+    //     // context.fillRect(boxX, boxY, boxW, boxH);
 
-  //     // // BORDER 
-  //     // context.strokeStyle = 'white';
-  //     // context.lineWidth = 3;
-  //     // context.strokeRect(boxX, boxY, boxW, boxH);
+    //     // // BORDER 
+    //     // context.strokeStyle = 'white';
+    //     // context.lineWidth = 3;
+    //     // context.strokeRect(boxX, boxY, boxW, boxH);
 
-  //     // // CENTER text **inside the box**
-  //     // context.textAlign = 'center';
+    //     // // CENTER text **inside the box**
+    //     // context.textAlign = 'center';
 
-  //     // // PADDING
-  //     // const innerCenterX = boxX + boxW / 2;
-  //     // // HEADER PADDING
-  //     // context.fillStyle = 'black';
-  //     // context.fillText('HIGH SCORES:', innerCenterX, boxY + 40);
-  //     // context.fillStyle = 'white';
-  //     // context.fillText('HIGH SCORES:', innerCenterX, boxY + 42);
+    //     // // PADDING
+    //     // const innerCenterX = boxX + boxW / 2;
+    //     // // HEADER PADDING
+    //     // context.fillStyle = 'black';
+    //     // context.fillText('HIGH SCORES:', innerCenterX, boxY + 40);
+    //     // context.fillStyle = 'white';
+    //     // context.fillText('HIGH SCORES:', innerCenterX, boxY + 42);
 
-  //     // // ENTRIES PADDING
-  //     // highScores.forEach((entry, index) => {
-  //     //   let y = boxY + 85 + index * 35;
+    //     // // ENTRIES PADDING
+    //     // highScores.forEach((entry, index) => {
+    //     //   let y = boxY + 85 + index * 35;
 
-  //     //   context.fillStyle = 'black';
-  //     //   context.fillText(`${entry.initials}: ${entry.score}`, innerCenterX, y);
-  //     //   context.fillStyle = 'white';
-  //     //   context.fillText(`${entry.initials}: ${entry.score}`, innerCenterX, y + 2);
-  //     // });
+    //     //   context.fillStyle = 'black';
+    //     //   context.fillText(`${entry.initials}: ${entry.score}`, innerCenterX, y);
+    //     //   context.fillStyle = 'white';
+    //     //   context.fillText(`${entry.initials}: ${entry.score}`, innerCenterX, y + 2);
+    //     // });
 
-  //   }
+    //   }
 
 
 
