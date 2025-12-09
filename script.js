@@ -25,7 +25,7 @@ window.addEventListener('load', function () {
   let enemies = [];
   let gameOver = false;
   let gameStart = false;
-  let lives = 1;
+  let lives = 3;
   let invunerable = false;
   let invunerableCounter = 0;
   const gameOverSound = new Audio('assets/soundeffects/wompwomp.mp3');
@@ -263,7 +263,7 @@ window.addEventListener('load', function () {
     highScores.sort((a, b) => b.score - a.score);
     highScores = highScores.slice(0, 5);
     refreshHighScores();
-    
+
     // HIDE UI
     initialsInput.style.display = 'none';
     saveScoreBtn.style.display = 'none';
