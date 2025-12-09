@@ -26,8 +26,8 @@ window.addEventListener('load', function () {
   let gameOver = false;
   let gameStart = false;
   let lives = 3;
-  let invunerable = false;
-  let invunerableCounter = 0;
+  let invincible = false;
+  let invincibleCounter = 0;
   const gameOverSound = new Audio('assets/soundeffects/wompwomp.mp3');
   gameOverSound.volume = 0.1;
 
@@ -39,7 +39,7 @@ window.addEventListener('load', function () {
   function refreshHighScores() {
     const list = document.getElementById('highScoreList');
     list.innerHTML = '';
-
+    console.log("refreshing high scores", highScores);
     highScores.forEach(entry => {
       const li = document.createElement('li');
       li.textContent = `${entry.initials}: ${entry.score}`;
@@ -246,7 +246,8 @@ window.addEventListener('load', function () {
       alert("Enter initials first!");
       return;
     }
-    let highScores = JSON.parse(localStorage.getItem('highScores')) || [];
+    
+    highScores = JSON.parse(localStorage.getItem('highScores')) || [];
 
 
     // NEW SCORE ENTRY
@@ -435,22 +436,22 @@ window.addEventListener('load', function () {
     update(input, deltaTime) {
       // collistion detection (watch 43:15 to see pythagerous theorem in action)
       enemies.forEach(enemy => {
-        console.log(invunerable);
+        console.log(invincible);
         // utilize isCollidingWith method
         if (this.isCollidingWith(enemy)) {
 
-          // If the user got hit by an enemy make them invunerable until the next enemy
-          if (invunerable) {
-            invunerableCounter++;
-            if (invunerableCounter == 60){
-              invunerableCounter = 0;
-              invunerable = false;
+          // If the user got hit by an enemy make them invincible until the next enemy
+          if (invincible) {
+            invincibleCounter++;
+            if (invincibleCounter == 60){
+              invincibleCounter = 0;
+              invincible = false;
             }
           } else {
-            // Take away one life and set the user to invunerable. 
+            // Take away one life and set the user to invincible. 
             lives--;
             updateLifeBar();
-            invunerable = true;
+            invincible = true;
             // When the last life is lost lose the game
             if (lives === 0) {
               console.log("puppy collides with " + enemy)
