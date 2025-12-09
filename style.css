@@ -60,7 +60,6 @@ body {
   background: transparent;
   height: 50px;
   width: 50px;
-  opacity: 0.5;
 }
 
 .volumeBtn:active {
