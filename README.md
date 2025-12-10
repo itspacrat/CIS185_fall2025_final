@@ -21,7 +21,7 @@ We started out with the base code given. We then met together and discussed the 
 Restructured the index file. Created the start and learn more screen, the mute button, favicon, and healthbar.
 
 ### Dodge
-Created the end game sound using the Audio() class and the high score screen with persistant data
+Created the end game sound using the Audio() class and the high score screen with persistent data
 utilizing local storage, and lots of CSS styling
 
 ### Blake
